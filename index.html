@@ -221,6 +221,40 @@
   .net-card.is-ex .net-icon{ filter: grayscale(0.6); }
   .net-card.is-ex .net-role{ color: var(--text-faint); }
 
+  .serv-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .serv-card{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 26px;
+    transition: border-color .18s ease, transform .18s ease;
+  }
+  .serv-card:hover{
+    border-color: var(--grass-dark);
+    transform: translateY(-4px);
+  }
+  .serv-num{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    margin-bottom: 14px;
+    display: block;
+  }
+  .serv-card h3{
+    font-size: 16px;
+    margin: 0 0 10px;
+  }
+  .serv-card p{
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
   .proj-grid{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -290,6 +324,37 @@
     background: var(--grass);
   }
 
+  .svc-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .svc-card{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 26px;
+  }
+  .svc-icon{
+    width: 30px; height: 30px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    box-shadow: inset 0 -5px 0 rgba(0,0,0,0.3), inset 0 3px 0 rgba(255,255,255,0.18);
+  }
+  .svc-card:nth-child(1) .svc-icon{ background: var(--grass); }
+  .svc-card:nth-child(2) .svc-icon{ background: var(--gold); }
+  .svc-card:nth-child(3) .svc-icon{ background: #6b7cff; }
+  .svc-card h3{
+    font-size: 16px;
+    margin: 0 0 10px;
+  }
+  .svc-card p{
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+
   footer{
     padding: 36px 0 130px;
     text-align: center;
@@ -328,6 +393,33 @@
     border-color: var(--gold);
     background: var(--bg-panel-raised);
   }
+  .hotbar a span.tip{
+    display: none;
+  }
+
+  .skin-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .skin-img{
+    width: 120px;
+    height: auto;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 10px 0 rgba(0,0,0,0.35));
+  }
+  .hero-title-block{
+    text-align: left;
+  }
+  .hero-title-block h1{ text-align: left; margin: 0 0 12px; }
+  .hero-title-block .hero-tag{ margin-bottom: 0; display: inline-block; }
+  @media (max-width: 560px){
+    .skin-wrap{ flex-direction: column; text-align: center; }
+    .hero-title-block, .hero-title-block h1{ text-align: center; }
+  }
 
   @media (max-width: 600px){
     section{ padding: 60px 0; }
@@ -348,8 +440,13 @@
 <main>
 
   <section class="hero" id="inicio">
-    <div class="hero-tag mono">DEVELOPER · CONFIGURADOR · MEDIA MANAGER · +1 AÑO DE EXPERIENCIA</div>
-    <h1 class="pixel"><span>BUGHATTI</span></h1>
+    <div class="skin-wrap">
+      <img class="skin-img" src="https://mc-heads.net/body/SoyBughatti/200" alt="Skin de Minecraft de SoyBughatti" width="120" loading="eager">
+      <div class="hero-title-block">
+        <div class="hero-tag mono">DEVELOPER · CONFIGURADOR · MEDIA MANAGER · +1 AÑO DE EXPERIENCIA</div>
+        <h1 class="pixel"><span>BUGHATTI</span></h1>
+      </div>
+    </div>
     <p>Desarrollo, configuro y gestiono contenido para Minecraft (Spigot) y Discord. Dueño de tres redes propias y creador de más de una decena de plugins a medida.</p>
     <div class="hero-blocks" aria-hidden="true">
       <div class="b"></div><div class="b"></div><div class="b"></div><div class="b"></div>
@@ -443,6 +540,30 @@
     </div>
   </section>
 
+  <section id="servicios">
+    <div class="wrap">
+      <span class="eyebrow mono">// SERVICIOS</span>
+      <h2>En qué puedo ayudarte.</h2>
+      <div class="svc-grid">
+        <div class="svc-card">
+          <div class="svc-icon" aria-hidden="true"></div>
+          <h3>Desarrollo de plugins</h3>
+          <p>Plugins a medida para Spigot: cosméticos, kits, warps, koths, trades y utilidades varias.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-icon" aria-hidden="true"></div>
+          <h3>Configuración de servidores</h3>
+          <p>Setup y ajuste de plugins existentes, menús, permisos y configuración general del servidor.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-icon" aria-hidden="true"></div>
+          <h3>Media Manager</h3>
+          <p>Gestión de contenido y redes para tu servidor o proyecto.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="contacto">
     <div class="wrap">
       <span class="eyebrow mono">// CONTACTO</span>
@@ -466,8 +587,9 @@
   <a href="#sobre-mi" title="Sobre mí" aria-label="Sobre mí">👤</a>
   <a href="#redes" title="Redes" aria-label="Redes">🌐</a>
   <a href="#proyectos" title="Proyectos" aria-label="Proyectos">🧩</a>
+  <a href="#servicios" title="Servicios" aria-label="Servicios">🛠️</a>
   <a href="#contacto" title="Contacto" aria-label="Contacto">✉️</a>
 </nav>
 
 </body>
-            </html>
+  </html>
