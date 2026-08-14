@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bughatti — Configurador de Minecraft & Discord</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0c0f0c;
+    --bg-panel: #141813;
+    --bg-panel-raised: #1b211a;
+    --line: #2a3226;
+    --grass: #58d66c;
+    --grass-dark: #2f8f42;
+    --gold: #e3b73f;
+    --redstone: #d64545;
+    --text: #e9ede6;
+    --text-muted: #8a9686;
+    --text-faint: #5a6456;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection{ background: var(--grass-dark); color: #fff; }
+
+  a{ color: inherit; }
+
+  :focus-visible{
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  .pixel{ font-family: 'Press Start 2P', monospace; }
+  .mono{ font-family: 'JetBrains Mono', monospace; }
+
+  .grid-bg{
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 42px 42px;
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  }
+
+  main{ position: relative; z-index: 1; }
+
+  .wrap{
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .hero{
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 24px 100px;
+  }
+
+  .hero-tag{
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--grass);
+    background: rgba(88,214,108,0.08);
+    border: 1px solid var(--grass-dark);
+    padding: 8px 14px;
+    border-radius: 3px;
+    margin-bottom: 28px;
+  }
+
+  .hero h1{
+    font-size: clamp(28px, 8vw, 56px);
+    line-height: 1.4;
+    margin: 0 0 20px;
+    letter-spacing: 1px;
+    text-shadow: 4px 4px 0 var(--grass-dark);
+  }
+
+  .hero h1 span{ color: var(--grass); }
+
+  .hero p{
+    color: var(--text-muted);
+    font-size: 16px;
+    max-width: 480px;
+    line-height: 1.7;
+    margin: 0 0 36px;
+  }
+
+  .hero-blocks{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .hero-blocks .b{
+    width: 20px; height: 20px;
+    border-radius: 3px;
+    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.35), inset 0 3px 0 rgba(255,255,255,0.15);
+  }
+  .hero-blocks .b:nth-child(1){ background: var(--grass); }
+  .hero-blocks .b:nth-child(2){ background: var(--gold); }
+  .hero-blocks .b:nth-child(3){ background: #6b7cff; }
+  .hero-blocks .b:nth-child(4){ background: var(--redstone); }
+
+  .scroll-hint{
+    position: absolute;
+    bottom: 110px;
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 3px;
+    animation: bob 2.2s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(8px); }
+  }
+
+  section{ padding: 90px 0; border-top: 1px solid var(--line); }
+  .eyebrow{
+    font-size: 11px;
+    color: var(--grass);
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    display: block;
+  }
+  h2{
+    font-size: clamp(22px, 5vw, 30px);
+    margin: 0 0 36px;
+    letter-spacing: 0.5px;
+  }
+
+  .about-body{
+    color: var(--text-muted);
+    font-size: 16px;
+    line-height: 1.8;
+    max-width: 640px;
+  }
+  .about-body strong{ color: var(--text); font-weight: 600; }
+
+  .stat-row{
+    display: flex;
+    gap: 28px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  .stat{
+    border: 1px solid var(--line);
+    background: var(--bg-panel);
+    padding: 16px 20px;
+    border-radius: 4px;
+    min-width: 130px;
+  }
+  .stat .n{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 26px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .stat .l{
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-top: 4px;
+  }
+
+  .net-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .net-card{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 24px;
+    position: relative;
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .net-card:hover, .net-card:focus-within{
+    transform: translateY(-4px);
+    border-color: var(--grass-dark);
+    box-shadow: 0 8px 0 rgba(0,0,0,0.25);
+  }
+  .net-icon{
+    width: 34px; height: 34px;
+    border-radius: 4px;
+    margin-bottom: 18px;
+    box-shadow: inset 0 -6px 0 rgba(0,0,0,0.3), inset 0 4px 0 rgba(255,255,255,0.18);
+  }
+  .net-card:nth-child(1) .net-icon{ background: var(--grass); }
+  .net-card:nth-child(2) .net-icon{ background: #6b7cff; }
+  .net-card:nth-child(3) .net-icon{ background: var(--gold); }
+
+  .net-card h3{
+    font-size: 17px;
+    margin: 0 0 6px;
+  }
+  .net-role{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--grass);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .proj-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .proj-card{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: background .18s ease, border-color .18s ease;
+  }
+  .proj-card:hover{
+    background: var(--bg-panel-raised);
+    border-color: var(--grass-dark);
+  }
+  .proj-slot{
+    flex-shrink: 0;
+    width: 38px; height: 38px;
+    border-radius: 5px;
+    background:
+      linear-gradient(135deg, var(--slot-a, #3a4536), var(--slot-b, #263021));
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .proj-card h3{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    margin: 2px 0 6px;
+    color: var(--text);
+  }
+  .proj-card p{
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .contact{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .contact-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    padding: 14px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+    transition: border-color .18s ease, background .18s ease;
+  }
+  .contact-btn:hover{
+    border-color: var(--grass);
+    background: var(--bg-panel-raised);
+  }
+  .contact-dot{
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    background: var(--grass);
+  }
+
+  footer{
+    padding: 36px 0 130px;
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hotbar{
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 6px;
+    background: rgba(20,24,19,0.9);
+    border: 1px solid var(--line);
+    padding: 6px;
+    border-radius: 8px;
+    backdrop-filter: blur(6px);
+  }
+  .hotbar a{
+    width: 46px; height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background: var(--bg-panel);
+    border: 1px solid transparent;
+    text-decoration: none;
+    font-size: 16px;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .hotbar a:hover, .hotbar a:focus-visible{
+    border-color: var(--gold);
+    background: var(--bg-panel-raised);
+  }
+
+  @media (max-width: 600px){
+    section{ padding: 60px 0; }
+    .hero{ padding-bottom: 130px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    .scroll-hint{ animation: none; }
+    .net-card, .proj-card, .hotbar a{ transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg" aria-hidden="true"></div>
+
+<main>
+
+  <section class="hero" id="inicio">
+    <div class="hero-tag mono">CONFIGURADOR · +10 MESES DE EXPERIENCIA</div>
+    <h1 class="pixel"><span>BUGHATTI</span></h1>
+    <p>Configuro y desarrollo plugins de Minecraft (Spigot) y estructuras de Discord. Dueño de tres redes propias y creador de más de una decena de plugins a medida.</p>
+    <div class="hero-blocks" aria-hidden="true">
+      <div class="b"></div><div class="b"></div><div class="b"></div><div class="b"></div>
+    </div>
+    <div class="scroll-hint mono">SCROLL ↓</div>
+  </section>
+
+  <section id="sobre-mi">
+    <div class="wrap">
+      <span class="eyebrow mono">// SOBRE MÍ</span>
+      <h2>Del comando al servidor.</h2>
+      <p class="about-body">
+        Soy <strong>Bughatti</strong>, configurador de <strong>Minecraft</strong> y <strong>Discord</strong>.
+        Desde hace más de 10 meses diseño sistemas de cosméticos, kits, warps, koths y utilidades
+        para servidores Spigot — y administro mis propias redes de principio a fin.
+      </p>
+      <div class="stat-row">
+        <div class="stat"><div class="n">10+</div><div class="l">MESES ACTIVO</div></div>
+        <div class="stat"><div class="n">10</div><div class="l">PLUGINS CREADOS</div></div>
+        <div class="stat"><div class="n">3</div><div class="l">REDES PROPIAS</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="redes">
+    <div class="wrap">
+      <span class="eyebrow mono">// REDES PROPIAS</span>
+      <h2>Servidores que administro.</h2>
+      <div class="net-grid">
+        <div class="net-card" tabindex="0">
+          <div class="net-icon" aria-hidden="true"></div>
+          <h3>MineDay Network</h3>
+          <div class="net-role">Dueño</div>
+        </div>
+        <div class="net-card" tabindex="0">
+          <div class="net-icon" aria-hidden="true"></div>
+          <h3>WifiMC Network</h3>
+          <div class="net-role">Dueño</div>
+        </div>
+        <div class="net-card" tabindex="0">
+          <div class="net-icon" aria-hidden="true"></div>
+          <h3>NoatMC Network</h3>
+          <div class="net-role">Dueño</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="proyectos">
+    <div class="wrap">
+      <span class="eyebrow mono">// PROYECTOS</span>
+      <h2>Plugins desarrollados.</h2>
+      <div class="proj-grid">
+        <div class="proj-card">
+          <div class="proj-slot" style="--slot-a:#4fae63;--slot-b:#2b6b3a;"></div>
+          <div><h3>DayCosmetics</h3><p>Kill effects, tags, hats, gadgets y pets.</p></div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-slot" style="--slot-a:#c96a3d;--slot-b:#7a3f22;"></div>
+          <div><h3>DayDrops</h3><p>Ítems exclusivos al morir, ignora keepInventory.</p></div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-slot" style="--slot-a:#5a7fd6;--slot-b:#2c3f77;"></div>
+          <div><h3>DayEdit</h3><p>Editor de ítems vía comandos y GUI.</p></div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-slot" style="--slot-a:#d6b23f;--slot-b:#7a6420;"></div>
+          <div><h3>DayKoths</h3><p>Gestión de Koths con menús y recompensas.</p></div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-slot" style="--slot-a:#d64545;--slot-b:#7a2424;"></div>
+          <div><h3>DayStaffs</h3><p>Comandos de moderación: freeze, vanish y más.</p></div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-slot" style="--slot-a:#9a5ad6;--slot-b:#4f2c77;"></div>
+          <div><h3>DayTrades</h3><p>Trade entre jugadores con menú de dos lados.</p></div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-slot" style="--slot-a:#5ad6c6;--slot-b:#227a6b;"></div>
+          <div><h3>DayUtils</h3><p>Comandos utilitarios varios del servidor.</p></div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-slot" style="--slot-a:#d65ab0;--slot-b:#7a2c5f;"></div>
+          <div><h3>DayWarps</h3><p>Creación y gestión de warps.</p></div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-slot" style="--slot-a:#e3b73f;--slot-b:#8a6a1a;"></div>
+          <div><h3>PlayerKits</h3><p>Menú de kits configurado para servidor.</p></div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-slot" style="--slot-a:#7a8ad6;--slot-b:#3a447a;"></div>
+          <div><h3>Rooms</h3><p>Salas privadas de práctica para BoxPvP.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <div class="wrap">
+      <span class="eyebrow mono">// CONTACTO</span>
+      <h2>Hablemos de tu servidor.</h2>
+      <div class="contact">
+        <a class="contact-btn" href="#" onclick="return false;"><span class="contact-dot" aria-hidden="true"></span>Discord — tu usuario aquí</a>
+        <a class="contact-btn" href="#" onclick="return false;"><span class="contact-dot" aria-hidden="true"></span>GitHub — tu usuario aquí</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    BUGHATTI — CONFIGURADOR DE MINECRAFT &amp; DISCORD
+  </footer>
+
+</main>
+
+<nav class="hotbar" aria-label="Navegación rápida">
+  <a href="#inicio" title="Inicio" aria-label="Inicio">🏠</a>
+  <a href="#sobre-mi" title="Sobre mí" aria-label="Sobre mí">👤</a>
+  <a href="#redes" title="Redes" aria-label="Redes">🌐</a>
+  <a href="#proyectos" title="Proyectos" aria-label="Proyectos">🧩</a>
+  <a href="#contacto" title="Contacto" aria-label="Contacto">✉️</a>
+</nav>
+
+</body>
+  </html>
