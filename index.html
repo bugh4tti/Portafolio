@@ -8,17 +8,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #0c0f0c;
-    --bg-panel: #141813;
-    --bg-panel-raised: #1b211a;
-    --line: #2a3226;
-    --grass: #58d66c;
-    --grass-dark: #2f8f42;
+    --bg: #070c11;
+    --bg-panel: #101820;
+    --bg-panel-raised: #16212b;
+    --line: #223140;
+    --grass: #4fd1f0;
+    --grass-dark: #1f8fbf;
     --gold: #e3b73f;
     --redstone: #d64545;
     --text: #e9ede6;
-    --text-muted: #8a9686;
-    --text-faint: #5a6456;
+    --text-muted: #8a9aa6;
+    --text-faint: #566470;
   }
 
   *{ box-sizing: border-box; }
@@ -54,6 +54,47 @@
     background-size: 42px 42px;
     opacity: 0.35;
     mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  }
+
+  .bg-glow{
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .bg-glow span{
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.35;
+    animation: drift 22s ease-in-out infinite;
+  }
+  .bg-glow span:nth-child(1){
+    width: 420px; height: 420px;
+    top: -100px; left: -80px;
+    background: var(--grass);
+    animation-delay: 0s;
+  }
+  .bg-glow span:nth-child(2){
+    width: 380px; height: 380px;
+    top: 30%; right: -120px;
+    background: #7a5ad6;
+    animation-delay: -7s;
+  }
+  .bg-glow span:nth-child(3){
+    width: 340px; height: 340px;
+    bottom: -140px; left: 30%;
+    background: var(--gold);
+    opacity: 0.18;
+    animation-delay: -14s;
+  }
+  @keyframes drift{
+    0%, 100%{ transform: translate(0,0) scale(1); }
+    50%{ transform: translate(30px,-30px) scale(1.1); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bg-glow span{ animation: none; }
   }
 
   main{ position: relative; z-index: 1; }
@@ -432,38 +473,70 @@
     font-family: 'JetBrains Mono', monospace;
   }
 
-  .hotbar{
+  .menu-btn{
     position: fixed;
-    bottom: 18px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    display: flex;
-    gap: 6px;
-    background: rgba(20,24,19,0.9);
-    border: 1px solid var(--line);
-    padding: 6px;
-    border-radius: 8px;
-    backdrop-filter: blur(6px);
-  }
-  .hotbar a{
-    width: 46px; height: 46px;
+    top: 18px;
+    right: 18px;
+    z-index: 11;
+    width: 52px;
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 5px;
+    gap: 4px;
     background: var(--bg-panel);
-    border: 1px solid transparent;
-    text-decoration: none;
-    font-size: 16px;
-    transition: border-color .15s ease, background .15s ease;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
   }
-  .hotbar a:hover, .hotbar a:focus-visible{
+  .menu-btn:hover, .menu-btn:focus-visible{
     border-color: var(--gold);
-    background: var(--bg-panel-raised);
   }
-  .hotbar a span.tip{
-    display: none;
+  .menu-btn span{
+    width: 3px;
+    height: 20px;
+    border-radius: 2px;
+    background: var(--text-muted);
+  }
+  .menu-panel{
+    position: fixed;
+    top: 78px;
+    right: 18px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: rgba(16,24,32,0.95);
+    border: 1px solid var(--line);
+    padding: 8px;
+    border-radius: 10px;
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease;
+  }
+  .menu-panel.open{
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .menu-panel a{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .menu-panel a:hover, .menu-panel a:focus-visible{
+    background: var(--bg-panel-raised);
+    color: var(--grass);
   }
 
   .skin-wrap{
@@ -498,13 +571,14 @@
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior: auto; }
     .scroll-hint{ animation: none; }
-    .net-card, .proj-card, .hotbar a{ transition: none; }
+    .net-card, .proj-card{ transition: none; }
   }
 </style>
 </head>
 <body>
 
 <div class="grid-bg" aria-hidden="true"></div>
+<div class="bg-glow" aria-hidden="true"><span></span><span></span><span></span></div>
 
 <main>
 
@@ -516,7 +590,7 @@
         <h1 class="pixel"><span>BUGHATTI</span></h1>
       </div>
     </div>
-    <p>Desarrollo, configuro y gestiono contenido para Minecraft (Spigot) y Discord. Dueño de tres redes propias y creador de más de una decena de plugins a medida.</p>
+    <p>Desarrollo, configuro y gestiono contenido para Minecraft y Discord. Dueño de tres redes propias y creador de más de una decena de plugins a medida.</p>
     <div class="hero-blocks" aria-hidden="true">
       <div class="b"></div><div class="b"></div><div class="b"></div><div class="b"></div>
     </div>
@@ -611,12 +685,8 @@
   <section id="configuraciones">
     <div class="wrap">
       <span class="eyebrow mono">// CONFIGURACIONES</span>
-      <h2>Menús y sistemas configurados.</h2>
+      <h2>Sistemas configurados.</h2>
       <div class="cfg-grid">
-        <div class="cfg-card">
-          <div class="cfg-slot" style="--slot-a:#e3b73f;--slot-b:#8a6a1a;"></div>
-          <div><h3>PlayerKits</h3><p>Menú de kits configurado para servidor.</p></div>
-        </div>
         <div class="cfg-card">
           <div class="cfg-slot" style="--slot-a:#d6543f;--slot-b:#8a2f1a;"></div>
           <div><h3>ExcellentCrates</h3><p>Configuración de cajas y sorteos.</p></div>
@@ -715,16 +785,39 @@
 
 </main>
 
-<nav class="hotbar" aria-label="Navegación rápida">
-  <a href="#inicio" title="Inicio" aria-label="Inicio">🏠</a>
-  <a href="#sobre-mi" title="Sobre mí" aria-label="Sobre mí">👤</a>
-  <a href="#redes" title="Redes" aria-label="Redes">🌐</a>
-  <a href="#proyectos" title="Proyectos" aria-label="Proyectos">🧩</a>
-  <a href="#configuraciones" title="Configuraciones" aria-label="Configuraciones">⚙️</a>
-  <a href="#media-team" title="Media Team" aria-label="Media Team">🎬</a>
-  <a href="#servicios" title="Servicios" aria-label="Servicios">🛠️</a>
-  <a href="#contacto" title="Contacto" aria-label="Contacto">✉️</a>
+<button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menuPanel">
+  <span></span><span></span><span></span>
+</button>
+<nav class="menu-panel" id="menuPanel" aria-label="Navegación rápida">
+  <a href="#inicio">🏠 Inicio</a>
+  <a href="#sobre-mi">👤 Sobre mí</a>
+  <a href="#redes">🌐 Redes</a>
+  <a href="#proyectos">🧩 Proyectos</a>
+  <a href="#configuraciones">⚙️ Configuraciones</a>
+  <a href="#media-team">🎬 Media Team</a>
+  <a href="#servicios">🛠️ Servicios</a>
+  <a href="#contacto">✉️ Contacto</a>
 </nav>
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const menuPanel = document.getElementById('menuPanel');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = menuPanel.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', isOpen);
+  });
+  menuPanel.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      menuPanel.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+  document.addEventListener('click', (e) => {
+    if (!menuPanel.contains(e.target) && !menuBtn.contains(e.target)) {
+      menuPanel.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+</script>
 
 </body>
         </html>
