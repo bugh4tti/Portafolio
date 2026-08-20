@@ -220,6 +220,12 @@
   .net-card.is-ex{ opacity: 0.6; }
   .net-card.is-ex .net-icon{ filter: grayscale(0.6); }
   .net-card.is-ex .net-role{ color: var(--text-faint); }
+  .net-desc{
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin-top: 12px;
+  }
 
   .serv-grid{
     display: grid;
@@ -355,6 +361,69 @@
     margin: 0;
   }
 
+  .cfg-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .cfg-card{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: background .18s ease, border-color .18s ease;
+  }
+  .cfg-card:hover{
+    background: var(--bg-panel-raised);
+    border-color: var(--gold);
+  }
+  .cfg-slot{
+    flex-shrink: 0;
+    width: 38px; height: 38px;
+    border-radius: 5px;
+    background: linear-gradient(135deg, var(--slot-a, #7a6420), var(--slot-b, #4a3d10));
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .cfg-card h3{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    margin: 2px 0 6px;
+    color: var(--text);
+  }
+  .cfg-card p{
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .media-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .media-card{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 24px;
+  }
+  .media-card h3{
+    font-size: 16px;
+    margin: 0 0 10px;
+    color: var(--gold);
+  }
+  .media-card p{
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
   footer{
     padding: 36px 0 130px;
     text-align: center;
@@ -480,16 +549,19 @@
           <div class="net-icon" aria-hidden="true"></div>
           <h3>MineDay Network</h3>
           <div class="net-role">Dueño</div>
+          <p class="net-desc">Gestión y administración de modalidades, staff, medias y del servidor en general, manejando así la Network entera junto a mi equipo.</p>
         </div>
         <div class="net-card is-ex" tabindex="0">
           <div class="net-icon" aria-hidden="true"></div>
           <h3>WifiMC Network</h3>
           <div class="net-role">Ex dueño</div>
+          <p class="net-desc">Gestión y administración completa del servidor, búsqueda de medias y configurador de la Network.</p>
         </div>
         <div class="net-card is-ex" tabindex="0">
           <div class="net-icon" aria-hidden="true"></div>
           <h3>NoatMC Network</h3>
           <div class="net-role">Ex dueño</div>
+          <p class="net-desc">Administración de medias, configuraciones creadas y aprendizaje dentro de lo que es el Staff Team.</p>
         </div>
       </div>
     </div>
@@ -529,12 +601,73 @@
           <div><h3>DayWarps</h3><p>Creación y gestión de warps.</p></div>
         </div>
         <div class="proj-card">
-          <div class="proj-slot" style="--slot-a:#e3b73f;--slot-b:#8a6a1a;"></div>
-          <div><h3>PlayerKits</h3><p>Menú de kits configurado para servidor.</p></div>
-        </div>
-        <div class="proj-card">
           <div class="proj-slot" style="--slot-a:#7a8ad6;--slot-b:#3a447a;"></div>
           <div><h3>DayRooms</h3><p>Salas privadas de práctica para BoxPvP.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="configuraciones">
+    <div class="wrap">
+      <span class="eyebrow mono">// CONFIGURACIONES</span>
+      <h2>Menús y sistemas configurados.</h2>
+      <div class="cfg-grid">
+        <div class="cfg-card">
+          <div class="cfg-slot" style="--slot-a:#e3b73f;--slot-b:#8a6a1a;"></div>
+          <div><h3>PlayerKits</h3><p>Menú de kits configurado para servidor.</p></div>
+        </div>
+        <div class="cfg-card">
+          <div class="cfg-slot" style="--slot-a:#d6543f;--slot-b:#8a2f1a;"></div>
+          <div><h3>ExcellentCrates</h3><p>Configuración de cajas y sorteos.</p></div>
+        </div>
+        <div class="cfg-card">
+          <div class="cfg-slot" style="--slot-a:#5ad68a;--slot-b:#227a45;"></div>
+          <div><h3>AxRewards</h3><p>Configuración de recompensas del servidor.</p></div>
+        </div>
+        <div class="cfg-card">
+          <div class="cfg-slot" style="--slot-a:#d65a5a;--slot-b:#7a2222;"></div>
+          <div><h3>PvPManager</h3><p>Configuración de mecánicas y ajustes de PvP.</p></div>
+        </div>
+        <div class="cfg-card">
+          <div class="cfg-slot" style="--slot-a:#5a8ad6;--slot-b:#22447a;"></div>
+          <div><h3>DeluxeMenus</h3><p>Menús personalizados para el servidor.</p></div>
+        </div>
+        <div class="cfg-card">
+          <div class="cfg-slot" style="--slot-a:#b25ad6;--slot-b:#5f227a;"></div>
+          <div><h3>PlayerKits2</h3><p>Configuración avanzada de kits.</p></div>
+        </div>
+        <div class="cfg-card">
+          <div class="cfg-slot" style="--slot-a:#5ad6c6;--slot-b:#227a6b;"></div>
+          <div><h3>Y muchos más</h3><p>Configuro plugins según lo que tu servidor necesite.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="media-team">
+    <div class="wrap">
+      <span class="eyebrow mono">// MEDIA TEAM</span>
+      <h2>Gestión y organización de medias.</h2>
+      <p class="about-body">
+        Como Media Manager soy comprometido, considerado, organizado y enfocado en mi trabajo.
+        Mi labor en este rol es atraer medias ofreciendo rangos según su dedicación, desempeño
+        y tiempo dedicado al servidor — pero siempre siendo estricto a la hora de bajar rangos,
+        demotear, warnear o strikear a un miembro del equipo cuando no cumple lo esperado.
+        Con esta filosofía he liderado equipos de más de <strong>100 medias</strong>.
+      </p>
+      <div class="media-grid">
+        <div class="media-card">
+          <h3>Atracción de medias</h3>
+          <p>Ofrezco rangos según dedicación, desempeño y tiempo invertido en el servidor.</p>
+        </div>
+        <div class="media-card">
+          <h3>Disciplina</h3>
+          <p>Estricto al bajar rangos, demotear, warnear o strikear cuando un miembro no cumple.</p>
+        </div>
+        <div class="media-card">
+          <h3>Escala</h3>
+          <p>Experiencia gestionando equipos grandes, de más de 100 medias en simultáneo.</p>
         </div>
       </div>
     </div>
@@ -587,9 +720,11 @@
   <a href="#sobre-mi" title="Sobre mí" aria-label="Sobre mí">👤</a>
   <a href="#redes" title="Redes" aria-label="Redes">🌐</a>
   <a href="#proyectos" title="Proyectos" aria-label="Proyectos">🧩</a>
+  <a href="#configuraciones" title="Configuraciones" aria-label="Configuraciones">⚙️</a>
+  <a href="#media-team" title="Media Team" aria-label="Media Team">🎬</a>
   <a href="#servicios" title="Servicios" aria-label="Servicios">🛠️</a>
   <a href="#contacto" title="Contacto" aria-label="Contacto">✉️</a>
 </nav>
 
 </body>
-  </html>
+        </html>
