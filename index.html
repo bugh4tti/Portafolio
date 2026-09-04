@@ -465,6 +465,45 @@
     margin: 0;
   }
 
+  .loc-row{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .loc-row .flag{ font-size: 18px; }
+
+  .tag-grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .tag{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    padding: 8px 14px;
+    border-radius: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .tag .flag{ font-size: 15px; }
+  .stack-block{ margin-top: 44px; }
+  .stack-block h3{
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin: 0 0 4px;
+  }
+
   footer{
     padding: 36px 0 130px;
     text-align: center;
@@ -610,6 +649,31 @@
         <div class="stat"><div class="n">1+</div><div class="l">AÑO ACTIVO</div></div>
         <div class="stat"><div class="n">9</div><div class="l">PLUGINS CREADOS</div></div>
         <div class="stat"><div class="n">1</div><div class="l">RED ACTIVA</div></div>
+      </div>
+
+      <div class="loc-row">
+        <span class="flag" aria-hidden="true">🇦🇷</span>
+        <span>Córdoba, Argentina — GMT-3 (hora de Argentina)</span>
+      </div>
+
+      <div class="stack-block">
+        <h3 class="mono">Idiomas</h3>
+        <div class="tag-grid">
+          <span class="tag"><span class="flag" aria-hidden="true">🇪🇸</span>Español — 100%</span>
+          <span class="tag"><span class="flag" aria-hidden="true">🇬🇧</span>Inglés — 60%</span>
+        </div>
+      </div>
+
+      <div class="stack-block">
+        <h3 class="mono">Stack técnico</h3>
+        <div class="tag-grid">
+          <span class="tag">Java</span>
+          <span class="tag">Node.js</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">HTML</span>
+          <span class="tag">Python</span>
+          <span class="tag">Lenguajes de configuración</span>
+        </div>
       </div>
     </div>
   </section>
@@ -820,4 +884,4 @@
 </script>
 
 </body>
-        </html>
+  </html>
